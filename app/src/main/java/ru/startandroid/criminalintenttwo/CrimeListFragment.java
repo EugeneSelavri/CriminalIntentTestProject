@@ -22,6 +22,7 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mAdapter;
     private boolean mDualPane;
     private onSomeEventListener mSomeEventListener;
+    private int position;
 
 
     public interface onSomeEventListener {
@@ -62,12 +63,11 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            position = getAdapterPosition();
             if (mDualPane) {
                //работа с фрагментом CrimeDetailsFragment
                 mSomeEventListener.someEvent(false, mCrime);
             } else {
-//                Intent intent = CrimeDetailsActivity.newIntent(getActivity(), mCrime.getId());
-//                startActivity(intent);
                 mSomeEventListener.someEvent(true, mCrime);
             }
         }
@@ -135,7 +135,18 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 }

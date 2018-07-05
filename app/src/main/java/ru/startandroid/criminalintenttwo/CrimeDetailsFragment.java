@@ -22,14 +22,22 @@ public class CrimeDetailsFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
+    private static final String ARG_CRIME_ID = "crime_id";
+
+    public static CrimeDetailsFragment newInstance(UUID id) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, id);
+
+        CrimeDetailsFragment fragment = new CrimeDetailsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(CrimeDetailsActivity.EXTRA_CRIME_ID);
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-//        if (savedInstanceState == null) {
-//            mCrime = new Crime();
-//        }
     }
 
     @Nullable
@@ -93,6 +101,7 @@ public class CrimeDetailsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
     }
 }

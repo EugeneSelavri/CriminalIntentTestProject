@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class CrimeDetailsActivity extends AppCompatActivity {
 
-    public static final String EXTRA_CRIME_ID = "ru.startandroid.criminalintenttwo.crime_id";
+    private static final String EXTRA_CRIME_ID = "ru.startandroid.criminalintenttwo.crime_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,8 @@ public class CrimeDetailsActivity extends AppCompatActivity {
             Fragment fragment = fm.findFragmentById(R.id.crime_details_container);
 
             if (fragment == null) {
-                fragment = new CrimeDetailsFragment();
+                UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+                fragment = CrimeDetailsFragment.newInstance(crimeId);
                 fm.beginTransaction().add(R.id.crime_details_container, fragment).commit();
             }
         }

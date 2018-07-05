@@ -11,9 +11,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 public class CrimeListActivity extends AppCompatActivity implements CrimeListFragment.onSomeEventListener {
     private CrimeListFragment fragmentList;
     private CrimeDetailsFragment fragmentDetail;
+    private UUID id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class CrimeListActivity extends AppCompatActivity implements CrimeListFra
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Fragment fragmentDetail = fm.findFragmentById(R.id.crime_detail);
             if (fragmentDetail == null) {
-                fragmentDetail = new CrimeDetailsFragment();
+                fragmentDetail = CrimeDetailsFragment.newInstance(id);
                 ft.add(R.id.crime_detail, fragmentDetail);
             }
             this.fragmentDetail = (CrimeDetailsFragment) fragmentDetail;
@@ -44,8 +47,9 @@ public class CrimeListActivity extends AppCompatActivity implements CrimeListFra
 
     @Override
     public void someEvent(boolean startActivity, Crime crime) {
+        id = crime.getId();
         if (startActivity) {
-            Intent intent = CrimeDetailsActivity.newIntent(this, crime.getId());
+            Intent intent = CrimeDetailsActivity.newIntent(this, id);
             startActivity(intent);
         } else if (fragmentDetail != null) {
             fragmentDetail.showCrime(crime);
