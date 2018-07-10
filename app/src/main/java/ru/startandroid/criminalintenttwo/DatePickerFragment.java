@@ -20,7 +20,9 @@ import java.util.GregorianCalendar;
 public class DatePickerFragment extends DialogFragment {
 
     private static final String ARG_DATE = "date";
-    public static final String EXTRA_DATE = "ru.startandroid.criminalintenttwo.date";
+    public static final String EXTRA_YEAR = "ru.startandroid.criminalintenttwo.year";
+    public static final String EXTRA_MONTH = "ru.startandroid.criminalintenttwo.month";
+    public static final String EXTRA_DAY = "ru.startandroid.criminalintenttwo.day";
 
     private DatePicker mDatePicker;
 
@@ -47,8 +49,7 @@ public class DatePickerFragment extends DialogFragment {
                         int year = mDatePicker.getYear();
                         int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
-                        Date date = new GregorianCalendar(year, month, day).getTime();
-                        sendResult(Activity.RESULT_OK, date);
+                        sendResult(Activity.RESULT_OK, year, month, day);
                     }
                 }).create();
     }
@@ -62,13 +63,15 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
-    private void sendResult(int resultCode, Date date) {
+    private void sendResult(int resultCode, int year, int month, int day) {
         if (getTargetFragment() == null) {
             return;
         }
 
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_DATE, date);
+        intent.putExtra(EXTRA_YEAR, year);
+        intent.putExtra(EXTRA_MONTH, month);
+        intent.putExtra(EXTRA_DAY, day);
 
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
